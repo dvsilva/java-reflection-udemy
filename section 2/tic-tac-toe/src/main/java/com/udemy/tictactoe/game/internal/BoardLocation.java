@@ -25,6 +25,7 @@
 package com.udemy.tictactoe.game.internal;
 
 class BoardLocation {
+	
     private int row;
     private int column;
 

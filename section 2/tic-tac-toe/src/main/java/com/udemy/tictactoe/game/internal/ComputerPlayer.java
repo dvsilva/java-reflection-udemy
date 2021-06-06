@@ -25,6 +25,7 @@
 package com.udemy.tictactoe.game.internal;
 
 class ComputerPlayer implements Player {
+	
     private static final String NAME = "Computer";
     private final ComputerInputProvider locationProvider;
 

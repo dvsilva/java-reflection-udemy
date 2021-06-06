@@ -27,6 +27,7 @@ package com.udemy.tictactoe.game.internal;
 import java.util.Scanner;
 
 class KeyboardInputProvider implements InputProvider {
+	
     private final Scanner scanner = new Scanner(System.in);
     private final BoardDimensions boardDimensions;
 

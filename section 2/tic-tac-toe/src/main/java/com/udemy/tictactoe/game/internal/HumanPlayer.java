@@ -25,6 +25,7 @@
 package com.udemy.tictactoe.game.internal;
 
 class HumanPlayer implements Player {
+	
     private static final String NAME = "You";
     private final KeyboardInputProvider inputProvider;
 

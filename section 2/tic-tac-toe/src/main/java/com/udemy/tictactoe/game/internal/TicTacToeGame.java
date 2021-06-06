@@ -30,7 +30,8 @@ import java.util.Random;
 
 import com.udemy.tictactoe.game.Game;
 
-public class TicTacToeGame implements Game {
+// public class TicTacToeGame implements Game {
+class TicTacToeGame implements Game {
     private static final int NUMBER_OF_PLAYERS = 2;
     private final Random random = new Random();
     private final List<Sign> playerSigns = Arrays.asList(Sign.X, Sign.Y);

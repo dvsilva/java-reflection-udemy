@@ -25,5 +25,7 @@
 package com.udemy.tictactoe.game.internal;
 
 interface InputProvider {
+	
     BoardLocation provideNextMove(Board board);
+    
 }

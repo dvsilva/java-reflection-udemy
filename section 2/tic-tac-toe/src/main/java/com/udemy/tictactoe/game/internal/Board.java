@@ -25,121 +25,122 @@
 package com.udemy.tictactoe.game.internal;
 
 class Board {
-    private Cell[][] cells;
-    private BoardDimensions dimensions;
 
-    public Board(BoardDimensions boardDimensions) {
-        this.dimensions = boardDimensions;
-        this.cells = new Cell[boardDimensions.getNumberOfColumns()][boardDimensions.getNumberOfRows()];
-        initAllCells();
-    }
+	private Cell[][] cells;
+	private BoardDimensions dimensions;
 
-    private void initAllCells() {
-        for (int r = 0; r < dimensions.getNumberOfRows(); r++) {
-            for (int c = 0; c < dimensions.getNumberOfColumns(); c++) {
-                this.cells[c][r] = new Cell();
-            }
-        }
-    }
+	public Board(BoardDimensions boardDimensions) {
+		this.dimensions = boardDimensions;
+		this.cells = new Cell[boardDimensions.getNumberOfColumns()][boardDimensions.getNumberOfRows()];
+		
+		initAllCells();
+	}
 
-    public void updateCell(int row, int column, Sign sign) {
-        this.cells[column][row].setSign(sign);
-    }
+	private void initAllCells() {
+		for (int r = 0; r < dimensions.getNumberOfRows(); r++) {
+			for (int c = 0; c < dimensions.getNumberOfColumns(); c++) {
+				this.cells[c][r] = new Cell();
+			}
+		}
+	}
 
-    public Sign checkWinner() {
-        // Check rows
-        for (int r = 0; r < dimensions.getNumberOfRows(); r++) {
-            Sign sign = getRowWinner(r);
-            if (sign != Sign.EMPTY) {
-                return sign;
-            }
-        }
+	public void updateCell(int row, int column, Sign sign) {
+		this.cells[column][row].setSign(sign);
+	}
 
-        // Check columns
-        for (int c = 0; c < dimensions.getNumberOfColumns(); c++) {
-            Sign sign = getColumnWinner(c);
-            if (sign != Sign.EMPTY) {
-                return sign;
-            }
-        }
+	public Sign checkWinner() {
+		// Check rows
+		for (int r = 0; r < dimensions.getNumberOfRows(); r++) {
+			Sign sign = getRowWinner(r);
+			if (sign != Sign.EMPTY) {
+				return sign;
+			}
+		}
 
-        // Check diagonal
-        Sign sign = getDiagonalWinner(0, 0, 1, 1);
-        if (sign != Sign.EMPTY) {
-            return sign;
-        }
+		// Check columns
+		for (int c = 0; c < dimensions.getNumberOfColumns(); c++) {
+			Sign sign = getColumnWinner(c);
+			if (sign != Sign.EMPTY) {
+				return sign;
+			}
+		}
 
-        // Check diagonal
-        return getDiagonalWinner(0, dimensions.getNumberOfColumns() - 1, -1, 1);
-    }
+		// Check diagonal
+		Sign sign = getDiagonalWinner(0, 0, 1, 1);
+		if (sign != Sign.EMPTY) {
+			return sign;
+		}
 
-    public boolean isCellEmpty(int row, int column) {
-        return this.cells[column][row].isEmpty();
-    }
+		// Check diagonal
+		return getDiagonalWinner(0, dimensions.getNumberOfColumns() - 1, -1, 1);
+	}
 
-    public char getPrintableCellSign(int row, int column) {
-        return this.cells[column][row].getSign().getValue();
-    }
+	public boolean isCellEmpty(int row, int column) {
+		return this.cells[column][row].isEmpty();
+	}
 
-    public boolean isBoardFull() {
-        for (int r = 0; r < dimensions.getNumberOfRows(); r++) {
-            for (int c = 0; c < dimensions.getNumberOfColumns(); c++) {
-                if (this.cells[c][r].isEmpty()) {
-                    return false;
-                }
-            }
-        }
-        return true;
-    }
+	public char getPrintableCellSign(int row, int column) {
+		return this.cells[column][row].getSign().getValue();
+	}
 
-    private Sign getColumnWinner(int currentColumn) {
-        Sign initialSign = this.cells[currentColumn][0].getSign();
+	public boolean isBoardFull() {
+		for (int r = 0; r < dimensions.getNumberOfRows(); r++) {
+			for (int c = 0; c < dimensions.getNumberOfColumns(); c++) {
+				if (this.cells[c][r].isEmpty()) {
+					return false;
+				}
+			}
+		}
+		return true;
+	}
 
-        if (initialSign == Sign.EMPTY) {
-            return initialSign;
-        }
+	private Sign getColumnWinner(int currentColumn) {
+		Sign initialSign = this.cells[currentColumn][0].getSign();
 
-        for (int r = 1; r < dimensions.getNumberOfRows(); r++) {
-            if (this.cells[currentColumn][r].getSign() != initialSign) {
-                return Sign.EMPTY;
-            }
-        }
-        return initialSign;
-    }
+		if (initialSign == Sign.EMPTY) {
+			return initialSign;
+		}
 
-    private Sign getRowWinner(int currentRow) {
-        Sign initialSign = this.cells[0][currentRow].getSign();
+		for (int r = 1; r < dimensions.getNumberOfRows(); r++) {
+			if (this.cells[currentColumn][r].getSign() != initialSign) {
+				return Sign.EMPTY;
+			}
+		}
+		return initialSign;
+	}
 
-        if (initialSign == Sign.EMPTY) {
-            return initialSign;
-        }
+	private Sign getRowWinner(int currentRow) {
+		Sign initialSign = this.cells[0][currentRow].getSign();
 
-        for (int c = 1; c < dimensions.getNumberOfColumns(); c++) {
-            if (this.cells[c][currentRow].getSign() != initialSign) {
-                return Sign.EMPTY;
-            }
-        }
-        return initialSign;
-    }
+		if (initialSign == Sign.EMPTY) {
+			return initialSign;
+		}
 
+		for (int c = 1; c < dimensions.getNumberOfColumns(); c++) {
+			if (this.cells[c][currentRow].getSign() != initialSign) {
+				return Sign.EMPTY;
+			}
+		}
+		return initialSign;
+	}
 
-    private Sign getDiagonalWinner(int startRow, int startColumn, int horizontalStep, int verticalStep) {
-        Sign initialSign = this.cells[startColumn][startRow].getSign();
-        if (initialSign == Sign.EMPTY) {
-            return Sign.EMPTY;
-        }
+	private Sign getDiagonalWinner(int startRow, int startColumn, int horizontalStep, int verticalStep) {
+		Sign initialSign = this.cells[startColumn][startRow].getSign();
+		if (initialSign == Sign.EMPTY) {
+			return Sign.EMPTY;
+		}
 
-        int r = startRow + verticalStep;
-        int c = startColumn + horizontalStep;
+		int r = startRow + verticalStep;
+		int c = startColumn + horizontalStep;
 
-        while (r < dimensions.getNumberOfRows() && c < dimensions.getNumberOfColumns()) {
-            if (this.cells[c][r].getSign() != initialSign) {
-                return Sign.EMPTY;
-            }
-            r += verticalStep;
-            c += horizontalStep;
-        }
+		while (r < dimensions.getNumberOfRows() && c < dimensions.getNumberOfColumns()) {
+			if (this.cells[c][r].getSign() != initialSign) {
+				return Sign.EMPTY;
+			}
+			r += verticalStep;
+			c += horizontalStep;
+		}
 
-        return initialSign;
-    }
+		return initialSign;
+	}
 }

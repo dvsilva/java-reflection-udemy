@@ -30,7 +30,6 @@ import java.util.ArrayList;
 import java.util.List;
 
 import com.udemy.tictactoe.game.Game;
-import com.udemy.tictactoe.game.internal.TicTacToeGame;
 
 /**
  * Tic Tac Toe
@@ -39,8 +38,9 @@ import com.udemy.tictactoe.game.internal.TicTacToeGame;
 
 public class Main {
 
-    public static void main(String[] args) throws IllegalAccessException, InstantiationException, InvocationTargetException {
-        Game game = createObjectRecursively(TicTacToeGame.class);
+    public static void main(String[] args) throws IllegalAccessException, InstantiationException, InvocationTargetException, ClassNotFoundException {
+//        Game game = createObjectRecursively(TicTacToeGame.class);
+    	Game game = (Game) createObjectRecursively(Class.forName("com.udemy.tictactoe.game.internal.TicTacToeGame"));
         game.startGame();
     }
 
