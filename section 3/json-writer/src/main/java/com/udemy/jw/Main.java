@@ -22,7 +22,7 @@
  *  SOFTWARE.
  */
 
-package jsonwriter;
+package com.udemy.jw;
 
 import java.lang.reflect.Field;
 
