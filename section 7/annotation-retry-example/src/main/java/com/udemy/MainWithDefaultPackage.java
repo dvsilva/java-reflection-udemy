@@ -46,19 +46,19 @@ import com.udemy.annotations.RetryOperation;
 import com.udemy.annotations.ScanPackages;
 
 /**
- * Annotations - Retry
+ * Annotations - Application Initialization
  * https://www.udemy.com/course/java-reflection-master-class
  */
 
 @ScanPackages({"app", "app.configs", "app.databases", "app.http"})
-public class Main {
+public class MainWithDefaultPackage {
 
     public static void main(String[] args) throws Throwable {
         initialize();
     }
 
     public static void initialize() throws Throwable {
-        ScanPackages scanPackages = Main.class.getAnnotation(ScanPackages.class);
+    	ScanPackages scanPackages = Main.class.getAnnotation(ScanPackages.class);
 
         if (scanPackages == null || scanPackages.value().length == 0) {
             return;
@@ -76,7 +76,7 @@ public class Main {
             Object instance = clazz.getDeclaredConstructor().newInstance();
 
             for (Method method : methods) {
-                callInitializingMethod(instance, method);
+            	callInitializingMethod(instance, method);
             }
         }
     }
@@ -109,14 +109,16 @@ public class Main {
             }
         }
     }
-
+    
     private static List<Method> getAllInitializingMethods(Class<?> clazz) {
         List<Method> initializingMethods = new ArrayList<>();
+        
         for (Method method : clazz.getDeclaredMethods()) {
             if (method.isAnnotationPresent(InitializerMethod.class)) {
                 initializingMethods.add(method);
             }
         }
+        
         return initializingMethods;
     }
 
@@ -124,30 +126,36 @@ public class Main {
         List<Class<?>> allClasses = new ArrayList<>();
 
         for (String packageName : packageNames) {
+            Class<?> mainClass = MainWithDefaultPackage.class;
+			String mainPackage = mainClass.getPackageName();
+            
+            String fullPackageName = mainPackage + "." + packageName;
             String packageRelativePath = packageName.replace('.', '/');
-
-            URI packageUri = Main.class.getResource(packageRelativePath).toURI();
-
+            
+			URI packageUri = mainClass.getResource(packageRelativePath).toURI();
+            
             if (packageUri.getScheme().equals("file")) {
                 Path packageFullPath = Paths.get(packageUri);
-                allClasses.addAll(getAllPackageClasses(packageFullPath, packageName));
+                allClasses.addAll(getAllPackageClasses(packageFullPath, fullPackageName));
             } 
             else if (packageUri.getScheme().equals("jar")) {
                 FileSystem fileSystem = FileSystems.newFileSystem(packageUri, Collections.emptyMap());
-
-                Path packageFullPathInJar = fileSystem.getPath("com/udemy/" + packageRelativePath);
-                allClasses.addAll(getAllPackageClasses(packageFullPathInJar, packageName));
+                String fullPackageRelativePath = fullPackageName.replace('.', '/');
+                Path packageFullPathInJar = fileSystem.getPath(fullPackageRelativePath);
+                
+                allClasses.addAll(getAllPackageClasses(packageFullPathInJar, fullPackageName));
 
                 fileSystem.close();
             }
         }
+        
         return allClasses;
     }
 
     private static List<Class<?>> getAllPackageClasses(Path packagePath, String packageName) throws IOException, ClassNotFoundException {
-        if (!Files.exists(packagePath)) {
-            return Collections.emptyList();
-        }
+		if (!Files.exists(packagePath)) {
+			return Collections.emptyList();
+		}
 
         List<Path> files = Files.list(packagePath)
                 .filter(Files::isRegularFile)
@@ -162,8 +170,8 @@ public class Main {
                 String classFullName = packageName.isBlank() ?
                         fileName.replaceFirst("\\.class$", "")
                         : packageName + "." + fileName.replaceFirst("\\.class$", "");
-              
-                Class<?> clazz = Class.forName("com.udemy." + classFullName);
+                
+                Class<?> clazz = Class.forName(classFullName);
                 classes.add(clazz);
             }
         }

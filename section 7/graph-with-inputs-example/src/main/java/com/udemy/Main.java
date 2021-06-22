@@ -74,12 +74,14 @@ public class Main {
 
         for (Parameter parameter : currentMethod.getParameters()) {
             Object value = null;
+            
             if (parameter.isAnnotationPresent(DependsOn.class)) {
                 String dependencyOperationName = parameter.getAnnotation(DependsOn.class).value();
                 Method dependencyMethod = operationToMethod.get(dependencyOperationName);
 
                 value = executeWithDependencies(instance, dependencyMethod, operationToMethod, inputToField);
-            } else if (parameter.isAnnotationPresent(Input.class)) {
+            } 
+            else if (parameter.isAnnotationPresent(Input.class)) {
                 String inputName = parameter.getAnnotation(Input.class).value();
 
                 Field field = inputToField.get(inputName);
@@ -118,9 +120,9 @@ public class Main {
             }
 
             Operation operation = method.getAnnotation(Operation.class);
-
             operationNameToMethod.put(operation.value(), method);
         }
+        
         return operationNameToMethod;
     }
 

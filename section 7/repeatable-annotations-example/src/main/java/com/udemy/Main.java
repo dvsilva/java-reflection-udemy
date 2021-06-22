@@ -71,7 +71,8 @@ public class Main {
 
         try {
             method.invoke(null);
-        } catch (IllegalAccessException | InvocationTargetException e) {
+        } 
+        catch (IllegalAccessException | InvocationTargetException e) {
             e.printStackTrace();
         }
     }
@@ -89,6 +90,7 @@ public class Main {
                 }
             }
         }
+        
         return scheduledMethods;
     }
 
@@ -107,12 +109,13 @@ public class Main {
             else if (packageUri.getScheme().equals("jar")) {
                 FileSystem fileSystem = FileSystems.newFileSystem(packageUri, Collections.emptyMap());
 
-                Path packageFullPathInJar = fileSystem.getPath(packageRelativePath);
+                Path packageFullPathInJar = fileSystem.getPath("com/udemy/" + packageRelativePath);
                 allClasses.addAll(getAllPackageClasses(packageFullPathInJar, packageName));
 
                 fileSystem.close();
             }
         }
+        
         return allClasses;
     }
 
@@ -136,10 +139,11 @@ public class Main {
                         ? fileName.replaceFirst("\\.class$", "")
                         : packageName + "." + fileName.replaceFirst("\\.class$", "");
 
-                Class<?> clazz = Class.forName(classFullName);
+                Class<?> clazz = Class.forName("com.udemy." + classFullName);
                 classes.add(clazz);
             }
         }
+        
         return classes;
     }
 }

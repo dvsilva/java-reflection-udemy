@@ -22,22 +22,35 @@
  *  SOFTWARE.
  */
 
-package com.udemy.loaders;
+package com.udemy.ex3;
 
-import com.udemy.annotations.Annotations.ExecuteOnSchedule;
-import com.udemy.annotations.Annotations.ExecutionSchedules;
-import com.udemy.annotations.Annotations.ScheduledExecutorClass;
+import java.lang.annotation.ElementType;
+import java.lang.annotation.Repeatable;
+import java.lang.annotation.Retention;
+import java.lang.annotation.RetentionPolicy;
+import java.lang.annotation.Target;
 
-@ScheduledExecutorClass
-public class Cache {
+public class Annotations {
 
-//	@ExecutionSchedules({
-//		@ExecuteOnSchedule(periodSeconds = 5),
-//		@ExecuteOnSchedule(delaySeconds = 10, periodSeconds = 1)
-//	})
-	@ExecuteOnSchedule(periodSeconds = 5)
-	@ExecuteOnSchedule(delaySeconds = 10, periodSeconds = 1)
-    public static void reloadCache() {
-        System.out.println("Reloading cache");
+
+    @Target(ElementType.TYPE)
+    @Retention(RetentionPolicy.RUNTIME)
+    @Repeatable(ViawablesContainer.class)
+    public @interface Viawable {
+    	
+        DeviceType deviceType();
+        int width();
+        int height();
+        
+        enum DeviceType {
+        	DESKTOP, MOBILE, TABLET
+        }
+        
+    }
+
+    @Target(ElementType.TYPE)
+    @Retention(RetentionPolicy.RUNTIME)
+    public @interface ViawablesContainer {
+    	Viawable[] value();
     }
 }

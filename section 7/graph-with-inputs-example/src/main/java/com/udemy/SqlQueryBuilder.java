@@ -59,7 +59,7 @@ public class SqlQueryBuilder {
         return String.format("SELECT %s FROM %s", columnsString, tableName);
     }
 
-    @FinalResult
+    @Operation("WhereClauseBuilder")
     public String addWhereClause(@DependsOn("SelectBuilder") String query, @Input("ids") List<String> ids) {
         if (ids.isEmpty()) {
             return query;
@@ -68,7 +68,8 @@ public class SqlQueryBuilder {
         return String.format("%s WHERE id IN (%s)", query, String.join(",", ids));
     }
 
-    public String addLimit(@DependsOn("SelectBuilder") String query, @Input("limit") Integer limit) {
+    @FinalResult
+    public String addLimit(@DependsOn("WhereClauseBuilder") String query, @Input("limit") Integer limit) {
         if (limit == null || limit == 0) {
             return query;
         }

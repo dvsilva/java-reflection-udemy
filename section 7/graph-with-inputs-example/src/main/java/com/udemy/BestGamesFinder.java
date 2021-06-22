@@ -59,6 +59,7 @@ public class BestGamesFinder {
     public SortedMap<Double, String> scoreGames(@DependsOn("Game-To-Price") Map<String, Float> gameToPrice,
                                                 @DependsOn("Game-To-Rating") Map<String, Float> gameToRating) {
         SortedMap<Double, String> gameToScore = new TreeMap<>(Collections.reverseOrder());
+        
         for (String gameName : gameToPrice.keySet()) {
             double score = (double) gameToRating.get(gameName) / gameToPrice.get(gameName);
             gameToScore.put(score, gameName);

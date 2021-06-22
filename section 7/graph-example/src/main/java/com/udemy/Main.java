@@ -47,7 +47,6 @@ public class Main {
         BestGamesFinder bestGamesFinder = new BestGamesFinder();
 
         List<String> bestGamesInDescendingOrder = execute(bestGamesFinder);
-
         System.out.println(bestGamesInDescendingOrder);
     }
 
@@ -66,6 +65,7 @@ public class Main {
 
         for (Parameter parameter : currentMethod.getParameters()) {
             Object value = null;
+            
             if (parameter.isAnnotationPresent(DependsOn.class)) {
                 String dependencyOperationName = parameter.getAnnotation(DependsOn.class).value();
                 Method dependencyMethod = operationToMethod.get(dependencyOperationName);
@@ -88,9 +88,9 @@ public class Main {
             }
 
             Operation operation = method.getAnnotation(Operation.class);
-
             operationNameToMethod.put(operation.value(), method);
         }
+        
         return operationNameToMethod;
     }
 

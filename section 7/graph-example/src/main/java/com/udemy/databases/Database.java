@@ -35,8 +35,10 @@ import java.util.stream.Collectors;
  * Simulates database
  */
 public class Database {
+	
     /// Game Name -> (Rating, Price)
-    private Map<String, List<Float>> GAME_TO_PRICE = Map.of("Fortnite", Arrays.asList(5f, 10f),
+    private Map<String, List<Float>> GAME_TO_PRICE = Map.of(
+    		"Fortnite", Arrays.asList(5f, 10f),
             "Minecraft", Arrays.asList(4.3f, 100f),
             "League Of Legends", Arrays.asList(4.9f, 89f),
             "Ace Combat", Arrays.asList(4.8f, 50f),
